@@ -1,7 +1,7 @@
 module.exports = {
   dependency: {
     platforms: {
-      ios: { project: "ios/RCTBaiduLocation.podspec" },
+      ios: { project: "ios/RCTBaiduLocation.xcodeproj" },
       android: { sourceDir: "android",
         packageImportPath:
             "import com.example.rctbaidulocation.baidumap.BaiduLocationPackage;",
@@ -12,7 +12,7 @@ module.exports = {
     "react-native-baidumap-location-fg": {
       root: __dirname,
       platforms: {
-        ios: { podspecPath: __dirname + "/ios/RCTBaiduLocation.podspec" },
+        ios: { podspecPath: __dirname + "/ios/RCTBaiduLocation.xcodeproj" },
       }
     }
   }
