@@ -4,7 +4,7 @@ module.exports = {
       ios: { project: "ios/RCTBaiduLocation.xcodeproj" },
       android: { sourceDir: "android",
         packageImportPath:
-            "import com.example.rctbaidulocation.baidumap.BaiduLocationPackage;",
+            "import com.example.rctbaidulocation.BaiduLocationPackage;",
         packageInstance: "new BaiduLocationPackage()",}
     }
   },
