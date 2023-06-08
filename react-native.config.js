@@ -12,7 +12,7 @@ module.exports = {
         ios: { podspecPath: __dirname + "/lib/ios/react-native-baidumap-location-fg.podspec" },
         android: { sourceDir: __dirname + "lib/android",
           packageImportPath:
-              "import cn.fg.react.baidumap.BaiduMapPackage;",
+              "import cn.fg.react.baidumap.BaiduLocationPackage;",
           packageInstance: "new BaiduLocationPackage()",}
       }
     }
