@@ -1,4 +1,4 @@
-package cn.qiuxiang.react.baidumap
+package cn.fg.react.baidumap
 
 import android.content.res.Resources
 import android.graphics.Point

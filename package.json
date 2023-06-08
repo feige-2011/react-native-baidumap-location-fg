@@ -8,11 +8,11 @@
     "location",
     "baidumap"
   ],
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "7c00 <i@7c00.cc>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/qiuxiang/react-native-location-sdk"
+    "url": "https://github.com/feige-2011/react-native-baidumap-location-fg"
   },
   "license": "MIT",
   "files": [
