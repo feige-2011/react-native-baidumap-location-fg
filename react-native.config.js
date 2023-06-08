@@ -1,10 +1,10 @@
 module.exports = {
   dependency: {
     platforms: {
-      ios: { project: "lib/ios/react-native-baidumap-location-fg.podspec" },
-      android: { sourceDir: "lib/android",
+      ios: { project: "ios/RCTBaiduLocation.podspec" },
+      android: { sourceDir: "android",
         packageImportPath:
-            "import laoli.lyf.react.baidumap.BaiduLocationPackage;",
+            "import com.example.rctbaidulocation.baidumap.BaiduLocationPackage;",
         packageInstance: "new BaiduLocationPackage()",}
     }
   },
@@ -12,7 +12,7 @@ module.exports = {
     "react-native-baidumap-location-fg": {
       root: __dirname,
       platforms: {
-        ios: { podspecPath: __dirname + "/lib/ios/react-native-baidumap-location-fg.podspec" },
+        ios: { podspecPath: __dirname + "/ios/RCTBaiduLocation.podspec" },
       }
     }
   }

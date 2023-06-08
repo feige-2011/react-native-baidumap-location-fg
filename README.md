@@ -1,174 +1,100 @@
-**注意：该项目已暂停维护**
-
-# react-native-baidumap-sdk [![npm version][version-badge]][npm] [![build status][build-badge]][build]
-
-React Native BaiduMap SDK for Android + iOS.
-
-你可以下载安装 [example.apk](https://github.com/qiuxiang/react-native-baidumap-sdk/releases/download/v0.5.0/example.apk) 看看实际中的效果。
-
-## 安装
-
-- [安装说明](docs/installation.md)
-- [项目示例运行说明](docs/setup.md)
-
-## 用法
-
-### 基本用法
-```javascript
-import { MapView } from 'react-native-baidumap-sdk'
-
-render() {
-  return <MapView center={{ latitude: 39.2, longitude: 112.4 }} />
-}
+# react-native-baidu-location
+集成百度的定位功能，支持IOS和Android
+##安装
+```
+npm install react-native-baidu-location
+rnpm link react-native-baidu-location
 ```
 
-### 显示卫星图
-```javascript
-<MapView satellite />
+##集成到iOS
+1.请在你的工程目录结构中，添加百度定位SDK引用，在选项TARGETS--> Build Phases-->Link Binary With Libraries-->Add Other，选择文件node_modules/react-native-baidu-location/ios/BaiduLocation/BaiduMapAPI_Base.framework<br>
+node_modules/react-native-baidu-location/ios/BaiduLocation/BaiduMapAPI_Location.framework<br>
+node_modules/react-native-baidu-location/ios/BaiduLocation/BaiduMapAPI_Search.framework<br>
+
+2.在工程目录结构中,添加百度定位SDK引用,在TARGETS-->Build Settings-->Framework Search Paths, 添加:
+$(SRCROOT)/../node_modules/react-native-baidu-location/ios/BaiduLocation<br>
+
+
+注：自iOS8起，系统定位功能进行了升级，开发者在使用定位功能之前，需要在info.plist里添加（以下二选一，两个都添加默认使用NSLocationWhenInUseUsageDescription）：
+NSLocationWhenInUseUsageDescription ，允许在前台使用时获取GPS的描述
+NSLocationAlwaysUsageDescription ，允许永久使用GPS的描述
+
+详情参考：[百度定位IOS集成指南](http://lbsyun.baidu.com/index.php?title=iossdk/guide/location)<br>
+
+##集成到android
+
+
+####添加配置
+在项目工程的`AndroidManifest.xml`中的<Application>标签下添加:
+
 ```
-<img src="https://user-images.githubusercontent.com/1709072/36829451-37e03fba-1d5a-11e8-8cb4-7d4a5296a083.png" width=300>
-
-### 监听地图事件
-```javascript
-import { MapView } from 'react-native-baidumap-sdk'
-
-render() {
-  return (
-    <MapView
-      onLoad={() => console.log('onLoad')}
-      onClick={point => console.log(point)}
-      onStatusChange={status => console.log(status)}
-    />
-  )
-}
+<meta-data
+android:name="com.baidu.lbsapi.API_KEY"
+android:value="AK" />       //key:开发者申请的Key
 ```
-<img src="https://user-images.githubusercontent.com/1709072/36655486-edc2e0f8-1afd-11e8-942b-22ae7c2db21c.png" width=300>
-
-### 定位并关联定位图层
-```javascript
-import { MapView, Location } from 'react-native-baidumap-sdk'
-
-await Location.init()
-Location.addLocationListener(location => this.setState({ location }))
-Location.start()
-
-state = { location: null }
-
-render() {
-  return <MapView location={this.state.location} locationEnabled />
-}
+在Application标签中声明SERVICE组件,每个APP拥有自己单独的定位SERVICE
 ```
-<img src="https://user-images.githubusercontent.com/1709072/36655487-ee218a5e-1afd-11e8-8efd-e2ed99268df5.png" width=300>
-
-### 添加标记
-```javascript
-<MapView>
-  <MapView.Marker
-    color="#2ecc71"
-    title="This is a marker"
-    onPress={this.onPress}
-  />
-</MapView>
+<service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote">
+</service>
 ```
-<img src="https://user-images.githubusercontent.com/1709072/36655491-f24ab3d0-1afd-11e8-8928-622a624aa850.png" width=300>
-
-### 添加自定义图片标记
-```javascript
-<MapView>
-  <MapView.Marker
-    title="This is a image marker"
-    image="flag"
-    coordinate={{ latitude: 39, longitude: 113 }}
-  />
-</MapView>
+声明使用权限
 ```
-<img src="https://user-images.githubusercontent.com/1709072/36775133-c320cb5e-1c9b-11e8-9f04-9ab2d4139a5f.png" width=300>
-
-### 添加自定义 View 标记
-```javascript
-<MapView>
-  <MapView.Marker
-    icon={() => (
-      <View>
-        <Image source={image} />
-        <Text>This is a custom marker</Text>
-      </View>
-    )}
-  />
-</MapView>
+<!-- 这个权限用于进行网络定位-->
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+<!-- 这个权限用于访问GPS定位-->
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+<!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位-->
+<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+<!-- 获取运营商信息，用于支持提供运营商信息相关的接口-->
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+<!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
+<uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
+<!-- 用于读取手机当前的状态-->
+<uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+<!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据-->
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+<!-- 访问网络，网络定位需要上网-->
+<uses-permission android:name="android.permission.INTERNET" />
+<!-- SD卡读取权限，用户写入离线定位数据-->
+<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"></uses-permission>
 ```
-<img src="https://user-images.githubusercontent.com/1709072/36655482-ec5d23b8-1afd-11e8-99c3-bbf62c163476.png" width=300>
 
-### 点聚合
-```javascript
-onStatusChange = status => this.cluster.update(status)
+详情参考：[百度定位android集成指南](http://lbsyun.baidu.com/index.php?title=android-locsdk)<br>
 
-renderMarker = item => (
-  <MapView.Marker
-    key={item.extra.key}
-    coordinate={item.coordinate}
-  />
-)
+##API
 
-render() {
-  return (
-    <MapView onStatusChange={this.onStatusChange}>
-      <MapView.Cluster
-        ref={ref => this.cluster = ref}
-        markers={this.markers}
-        renderMarker={this.renderMarker}
-      />
-    </MapView>
-  )
-}
+| API | Note |    
+|---|---|
+| `startLocation` | 开始定位 |
+| `stopLocation` | 停止定位 |
+| `didUpdateBMKUserLocation` | 定位刷新的回调方法 |
+| `didStopLocatingUser` | 定位停止的回调方法 |
+| `didFailToLocateUserWithError` | 定位失败的回调方法 |
+
+##Usage
+
 ```
-<img src="https://user-images.githubusercontent.com/1709072/36655484-ed17649e-1afd-11e8-81c5-04a981862b1a.png" width=300> <img src="https://user-images.githubusercontent.com/1709072/36655483-ecbb4b64-1afd-11e8-954c-ded218f8a696.png" width=300>
+import BaiduLocation from 'react-native-baidu-location'
 
-### 显示热力图
+//开始定位
+BaiduLocation.startLocation();
 
-```javascript
-points = [
-  {
-    latitude: 39,
-    longitude: 113,
-    intensity: 16,
-  },
-  ...
-]
+//停止定位
+BaiduLocation.stopLocation();
 
-<MapView>
-  <MapView.HeatMap
-    points={this.points}
-    radius={20}
-    opacity={0.5}
-  />
-</MapView>
+//定位刷新回调
+BaiduLocation.didUpdateBMKUserLocation(param=>{
+    console.log('didUpdateBMKUserLocation',param);
+})
+
+//定位失败的回调
+BaiduLocation.didFailToLocateUserWithError(param=>{
+    console.log('didFailToLocateUserWithError',param);
+})
+
+//定位停止的回调
+BaiduLocation.didStopLocatingUser(param=>{
+    console.log('didStopLocatingUser',param);
+})
+
 ```
-<img src="https://user-images.githubusercontent.com/1709072/36829390-f57f7e7e-1d59-11e8-8654-2f264e61d32b.png" width=300>
-
-### 地理编码/逆地理编码
-```javascript
-import { Geocode } from 'react-native-baidumap-sdk'
-
-const searchResult = await Geocode.search('海龙大厦')
-const reverseResult = await Geocode.reverse({ latitude: 39, longitude: 113 })
-```
-<img src="https://user-images.githubusercontent.com/1709072/36655485-ed756bfc-1afd-11e8-8f4b-c6ec50ebc8dd.png" width=300>
-
-需要注意，以上例子简写了一些属性，并不能直接使用，更多实际的例子请参考：[example](https://github.com/qiuxiang/react-native-baidumap-sdk/tree/master/example)。
-
-## 接口文档
-- [MapView](docs/map-view.md)
-  - [Marker](docs/marker.md)
-  - [Polyline](docs/polyline.md)
-  - [Polygon](docs/polygon.md)
-  - [Circle](docs/circle.md)
-  - [HeatMap](docs/heat-map.md)
-  - [Cluster](docs/cluster.md)
-- [Location](docs/location.md)
-- [Geocode](docs/geocode.md)
-
-[npm]: https://www.npmjs.com/package/react-native-baidumap-sdk
-[version-badge]: https://badge.fury.io/js/react-native-baidumap-sdk.svg
-[build-badge]: https://travis-ci.org/qiuxiang/react-native-baidumap-sdk.svg?branch=master
-[build]: https://travis-ci.org/qiuxiang/react-native-baidumap-sdk
