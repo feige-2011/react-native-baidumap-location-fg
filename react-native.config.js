@@ -4,7 +4,7 @@ module.exports = {
       ios: { project: "lib/ios/react-native-baidumap-location-fg.podspec" },
       android: { sourceDir: "lib/android",
         packageImportPath:
-            "import cn.fg.react.baidumap.BaiduLocationPackage;",
+            "import cn.lyf.react.baidumap.BaiduLocationPackage;",
         packageInstance: "new BaiduLocationPackage()",}
     }
   },
